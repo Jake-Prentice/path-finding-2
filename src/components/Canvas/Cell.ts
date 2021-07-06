@@ -31,7 +31,7 @@ class Cell {
         const y = this.row * CELL_SIZE;
 
         ctx.fillStyle = "cyan";
-        ctx.lineWidth = 2 
+        ctx.lineWidth = 1
 
         if (fill) {
                 ctx.fillRect(x,y, CELL_SIZE, CELL_SIZE)   

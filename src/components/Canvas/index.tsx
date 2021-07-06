@@ -21,7 +21,7 @@ const Canvas = () => {
             setTimeout(() => {
                 shortestPath[0].show(ctxRef.current!, true);
                 setShortestPath(prev => prev.slice(1));
-            }, 30)
+            }, 60)
         
     }, [shortestPath, process])
 
