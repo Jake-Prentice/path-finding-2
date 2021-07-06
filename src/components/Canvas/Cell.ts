@@ -30,8 +30,12 @@ class Cell {
         const x = this.col * CELL_SIZE;
         const y = this.row * CELL_SIZE;
 
-        ctx.fillStyle = "red"; 
-        fill && ctx.fillRect(x,y, CELL_SIZE, CELL_SIZE)
+        ctx.fillStyle = "cyan";
+        ctx.lineWidth = 2 
+
+        if (fill) {
+                ctx.fillRect(x,y, CELL_SIZE, CELL_SIZE)   
+        } 
 
         if (this.walls[0]) {
             ctx.moveTo(x,y)
@@ -69,41 +73,41 @@ class Cell {
         //node right
         if (this.col < grid[0].length - 1) neighbors.push(grid[this.row][this.col + 1]);
         
-        if (includeDiagonals) {
-            //bottom-right
-            if (this.row < grid.length - 1 && this.col < grid[0].length - 1) neighbors.push(grid[this.row + 1][this.col + 1])
-            //bottom-left
-            if (this.row < grid.length - 1 && this.col > 0 ) neighbors.push(grid[this.row + 1][this.col - 1])
-            //top-right
-            if (this.row > 0 && this.col < grid[0].length - 1) neighbors.push(grid[this.row - 1][this.col + 1])
-            //top-left
-            if (this.row > 0 && this.col > 0) neighbors.push(grid[this.row - 1][this.col - 1])
-        }
+        // if (includeDiagonals) {
+        //     //bottom-right
+        //     if (this.row < grid.length - 1 && this.col < grid[0].length - 1) neighbors.push(grid[this.row + 1][this.col + 1])
+        //     //bottom-left
+        //     if (this.row < grid.length - 1 && this.col > 0 ) neighbors.push(grid[this.row + 1][this.col - 1])
+        //     //top-right
+        //     if (this.row > 0 && this.col < grid[0].length - 1) neighbors.push(grid[this.row - 1][this.col + 1])
+        //     //top-left
+        //     if (this.row > 0 && this.col > 0) neighbors.push(grid[this.row - 1][this.col - 1])
+        // }
 
         return neighbors.filter(neighbor => !neighbor.isVisited);
     }
 
 
     isCellAccessible(cell: Cell) {
-        let isAccessible = false;
+        let isWall = false;
 
         if (cell.col !== this.col) {
             const relativePos = cell.col - this.col;
             //left
-            if (relativePos < 0) isAccessible = this.walls[3];
+            if (relativePos < 0) isWall = this.walls[3];
             //right
-            else if (relativePos > 0) isAccessible = this.walls[1];
+            else if (relativePos > 0) isWall = this.walls[1];
         }
 
         else if (cell.row !== this.row) {
-            const relativePos = cell.row - this.row;
+            const relativePos = cell.row - this.row; 
             //above
-            if (relativePos < 0) isAccessible = this.walls[0];
+            if (relativePos < 0) isWall = this.walls[0];
             //below
-            else if (relativePos > 0) isAccessible = this.walls[2];
+            else if (relativePos > 0) isWall = this.walls[2];
         }
 
-        return isAccessible;
+        return !isWall;
     }
 
 }

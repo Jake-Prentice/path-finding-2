@@ -19,7 +19,7 @@ const dijkstrasAlgorithm = ({gridRef, startPos, endPos}: IDijkstrasAlgorithm) =>
     grid[startPos.row][startPos.col].distToStart = 0;
 
     const visitedCells: Cell[] = [];
-    const unvisitedCells = grid.flat();
+    let unvisitedCells = grid.flat();
 
     //keep going until no more unvisited nodes
     while (!!unvisitedCells.length) {
@@ -32,14 +32,12 @@ const dijkstrasAlgorithm = ({gridRef, startPos, endPos}: IDijkstrasAlgorithm) =>
         //reaches the end
         if (closestCell === grid[endPos.row][endPos.col]) break
 
-        const neighborCells = closestCell.getUnvisitedNeigbours({grid, includeDiagonals: true})
+        let neighborCells = closestCell.getUnvisitedNeigbours({grid, includeDiagonals: true})
 
-        neighborCells.forEach(c => {
-            if (!closestCell.isCellAccessible(c)) {
-                console.log(c)
-            }
-        })
 
+        neighborCells = neighborCells.filter(c => closestCell.isCellAccessible(c))  
+
+ 
         if (!neighborCells) continue;
 
         for (let neighbor of neighborCells) {

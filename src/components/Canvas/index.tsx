@@ -14,7 +14,16 @@ const Canvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
     const [process, setProcess] = useState<Cell[]>([]);
+    const [shortestPath, setShortestPath] = useState<Cell[]>([]);
 
+    useEffect(() => {
+        if (shortestPath.length === 0 || !ctxRef.current || process.length > 0) return;
+            setTimeout(() => {
+                shortestPath[0].show(ctxRef.current!, true);
+                setShortestPath(prev => prev.slice(1));
+            }, 30)
+        
+    }, [shortestPath, process])
 
     useEffect(() => {
         if (process.length === 0 || !ctxRef.current ) return;
@@ -48,12 +57,12 @@ const Canvas = () => {
 
 
         const process = generateMaze(grid);
+        setProcess(process);
 
-        
         for (let r=0; r<grid.length; r++) {
             for (let c=0; c < grid[0].length; c++) {
                 grid[r][c].isVisited = false;
-                grid[r][c].show(ctx);
+        //         grid[r][c].show(ctx);
             }
         }
 
@@ -65,12 +74,8 @@ const Canvas = () => {
 
 
         if (!res) return;
-
-        res.shortestPath.forEach(c => {
-            c.show(ctx, true)
-        })
-
-        // setProcess(process);
+        
+        if (res.shortestPath) setShortestPath(res.shortestPath); 
 
     }, [])
     
